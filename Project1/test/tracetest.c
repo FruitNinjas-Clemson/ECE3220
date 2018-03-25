@@ -1,0 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+int main(int arg, char **argv) {
+	
+	int i, count = atoi(argv[1]);
+	for (i = 0; i < count; i++)
+		printf("%d\n", i);
+	return 0;
+}

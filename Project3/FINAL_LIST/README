@@ -1,0 +1,33 @@
+Austin Johnson
+ECE 3220
+Project #3
+
+
+KNOWN PROBLEMS: None from the tests that I have ran against it.
+
+DESCRIPTION: Project #3 is a memory allocator that uses segregated lists which keeps
+		up with nodes that were already allocated for without the user's request. This
+		is because they are there for easy allocation, as malloc just removes the head
+		of the corresponding list and does not have to call mmap each time. 
+
+DESIGN: My implementation of a memory allocator using 10 segregated lists, sizes
+		2,4,8,16,32,64,128,256,512 and 1024. These lists contain a page worth (4096)
+		of free blocks from mmap that are ready to be used by the user. Whenever a
+		block is allocated for, it is removed from the free list and placed into its
+		corresponding allocated list. Whenever a common block size (a power of 2) is
+		freed, it is removed from the allocated list and placed back into the free list.
+		For blocks over 1024, the allocator gives them exactly what they request
+		plus metadata and places it into the allocated list. Whenever one of
+		these blocks are freed, they do not get placed into a free list but are
+		instead unmapped. Realloc returns the same block the user already have if they
+		request a block smaller than the one they have. I also use a defined constant
+		as the max size of a 32 bit integer, which is the maximum number of bytes the
+		user can request. I use this variable to try to protect against freeing variables
+		not malloc'd for, such as local variables. I use it because I have to subtract
+		the size of my metadata from the ptr passed in (to either free or realloc) in
+		order to get the block size so that I know what segregated list to go to. If
+		an invalid ptr was passed in, there will just be garbage data in my block_size
+		member. I've found that this data is always a huge number, hence why I defined
+		a constant to check if the block_size is greater than it. If it is, I assume it
+		is an invalid ptr and return (because no user should request for more than
+		4294967295 bytes at one time).

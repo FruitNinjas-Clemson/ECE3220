@@ -1,0 +1,21 @@
+# Austin Johnson
+# CPSC 3220
+# Project 2
+# Makefile
+
+CFLAGS = -Wall -g -c
+
+all: list.o mythreads.o libmythreads.a cooperative
+
+mythreads.o: mythreads.c
+	gcc $(CFLAGS) mythreads.c list.c
+
+libmythreads.a:
+	ar -cvr libmythreads.a list.o mythreads.o
+
+cooperative: cooperative_test.c
+	gcc -Wall -g -o cooperative cooperative_test.c libmythreads.a
+
+clean :
+	rm list.o mythreads.o libmythreads.a 
+

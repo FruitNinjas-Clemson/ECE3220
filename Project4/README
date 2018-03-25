@@ -1,0 +1,38 @@
+Austin Johnson
+Partner: Hunter Booth
+ECE 3220
+Project #4
+
+DESIGN:
+
+This is designed to read a FAT12 image and will reproduce and print the
+files from the disk even if they had been deleted. It will print the file name
+and extension along with the size to stdout. The resulting file will be a duplicate of
+what is on the disk which will be output to a specified output directory.
+
+
+IMPLEMENTATION:
+
+makefile
+file.c
+file.h
+notjustcats.c
+
+The file.c and file.h files contain the list functions for both directories and
+files. The functions in file.c allow inserted and head removal from file lists
+and directory lists. notjustcats.c includes main which reads in the image into a
+dynamic string, and analyzes the string to extract all data and files from the image.
+This file is the driver behind the whole program, implementing multiple functions to
+read the FAT and extract the files and data. There are two different lists, one that
+contains the sub directories within the root directory (all directories have a pointer
+to a directory list BUT only the root directory uses this list. It was implemented this way
+to avoid having more structure definitions) as well as a list that contains the files
+in the each directory (ALL directories uses this list). A node in the directory list
+contains the number of files in that directory, a integer stating where the data section
+starts in the image, and the file path. A node in the file list contains the file name, file
+extension, file size, path, current cluster in the image, data, and status on whether it is
+deleted or not. When outputting the files, all of the files under the root directory are popped
+off the list of files and output to stdout, as well as it's data to the output directory.
+Next each directory in the root's list of sub directories is popped off, and its files are
+popped off of the sub directory's file list and output to stdout, as well as it's data to
+the output directory.

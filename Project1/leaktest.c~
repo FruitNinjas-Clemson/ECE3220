@@ -1,0 +1,51 @@
+/*
+*  Austin Johnson
+*  CPSC 3220 
+*  Project 1
+*
+*
+*  Assumptions:
+*
+*
+*
+*  Bugs:
+*
+*
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+
+#define ALLOCS 100
+#define FREES 75
+
+typedef struct leak_test_allocations {
+	int i;
+	int *p;
+	char c;
+	char *s;
+} leak_test;
+
+int main() {
+
+	int i; 
+	void *mem_blocks[ALLOCS];
+
+	//allocate memory
+	for (i = 0; i < ALLOCS; i++) {
+		if (i % 2 == 0) 
+			mem_blocks[i] = (int *) malloc(sizeof(int));
+		else if (i % 3 == 0) 
+			mem_blocks[i] = (char *) malloc(sizeof(char));
+		else if (i % 5 == 0)
+			mem_blocks[i] = (int **) malloc(sizeof(int *));
+		else 
+			mem_blocks[i] = (leak_test *) malloc(sizeof(leak_test));
+	}
+		
+	//free memory
+	for (i = 0; i < FREES; i++) 
+		free(mem_blocks[i]);
+
+	return 0;
+}
